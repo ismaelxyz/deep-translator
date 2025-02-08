@@ -10,7 +10,7 @@ keywords = ["translator", "deep-translator", "immediate", "languages", "automati
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
-name = "deeptrans"
+name = "deeptranslator"
 crate-type = ["cdylib", "rlib"]
 
 

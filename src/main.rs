@@ -12,7 +12,7 @@
 //! Note that
 //!
 use clap::{Arg, ArgAction, Command};
-use deeptrans::*;
+use deeptranslator::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
