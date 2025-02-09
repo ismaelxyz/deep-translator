@@ -3,5 +3,5 @@
 pub struct Libre {
     pub api_key: String,
     pub url: String,
-    pub alternatives: usize
+    pub alternatives: usize,
 }

@@ -92,7 +92,9 @@ pub async fn batch(text_list: Vec<String>, api_key: &str, detailed: bool) -> Vec
     println!("body -> {:?}", &body);
     let detections = &body["detections"];
 
-    let Value::Array(detections) = detections else { unreachable!() };
+    let Value::Array(detections) = detections else {
+        unreachable!()
+    };
     let res = detections.iter().map(|obj| obj[0].clone()).collect();
 
     if detailed {

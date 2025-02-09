@@ -1,7 +1,7 @@
 //! Support for web platform
 
-use wasm_bindgen::prelude::*;
 use gloo_utils::format::JsValueSerdeExt;
+use wasm_bindgen::prelude::*;
 
 #[derive(
     Debug,

@@ -148,7 +148,7 @@ impl Translator {
                     ("source", &self.source),
                     ("target", &self.target),
                     ("format", "text"),
-                    ("alternatives", &alternatives_str)
+                    ("alternatives", &alternatives_str),
                 ];
 
                 if !libre.api_key.is_empty() {
@@ -402,14 +402,13 @@ impl Translator {
 }
 
 impl Default for Translator {
-    
     fn default() -> Self {
         Translator {
             source: "auto".to_string(),
             target: "en".to_string(),
             engine: Engine::Google,
             #[cfg(not(target_arch = "wasm32"))]
-            proxies: Vec::new()
+            proxies: Vec::new(),
         }
     }
 }
