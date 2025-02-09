@@ -99,24 +99,7 @@ impl Translator {
 
         response_status(response)
     }
-/*
-<?php
 
-$usuarios = array(
-    array('nombre' => 'Alex', 'apellido' => 'Escobar', 'telefono' => '3213211212'),
-    // En el código original falta una coma al finalizar esta linea
-    array('nombre' => 'Juan', 'apellido' => 'Gomez', 'telefono' => '3211231212'),
-    array('nombre' => 'Andres', 'apellido' => 'Marín', 'telefono' => '3211112223'),
-    array('nombre' => 'Angie', 'apellido' => 'Rivera', 'telefono' => '3211212121')
-);
-
-foreach ($usuarios as $usuario) {
-    echo $usuario['nombre'].' '.$usuario['apellido'].' '.$usuario['telefono'];
-}
-
-
-?>
-*/
     #[inline(always)]
     pub async fn translate(&self, text: &str) -> Result<Value, Error> {
         let text = text.trim();
