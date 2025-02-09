@@ -88,9 +88,7 @@ pub enum Engine {
         client_id: String,
         secret_key: String,
     },
-    Pons {
-        return_all: bool,
-    },
+    Pons,
     Qcri(Qcri),
     Yandex {
         api_key: String,
@@ -119,7 +117,7 @@ impl Engine {
             Self::MyMemory { .. } => "http://api.mymemory.translated.net/get".into(),
             // "https://papago.naver.com/"
             Self::Papago { .. } => "https://openapi.naver.com/v1/papago/n2mt".into(),
-            Self::Pons { .. } => "https://en.pons.com/translate/".into(),
+            Self::Pons { .. } => "https://api-ng.pons.com/pons-mf-resultpage/api/translate".into(),
             Self::Qcri(..) => Qcri::base_url("translate"),
             Self::Yandex { .. } => "https://translate.yandex.net/api/v1.5/tr.json/translate".into(),
         }

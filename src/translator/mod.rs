@@ -10,12 +10,9 @@ use std::ops::{Deref, DerefMut};
 
 #[inline(always)]
 fn response_status(response: Response) -> Result<Response, Error> {
-    if response.status() == 429 {
-        return Err(Error::TooManyRequests);
-    }
 
     if response.status() != 200 {
-        return Err(Error::Request);
+        return Err(Error::Response(response.status()));
     }
 
     Ok(response)
@@ -80,11 +77,12 @@ impl Translator {
         url_params: &[(&str, &str)],
     ) -> Result<Response, Error> {
         let url = I::into(url).unwrap_or_else(|| self.base_url());
+
         let response = self
             .client()
             .build()?
             .get(url)
-            .header("Content-Type", "application/json")
+            
             .query(&url_params)
             .send()
             .await?;
@@ -308,44 +306,25 @@ impl Translator {
 
                 Ok(response.json::<Value>().await?["message"]["result"]["translatedText"].clone())
             }
-            Engine::Pons { return_all } => {
-                let url = format!(
-                    "{}{}-{}/{text}",
-                    self.base_url(),
-                    &self.source,
-                    &self.target
-                );
-                let response = self.request(url, &[]).await?;
+            Engine::Pons => {
+                let response = self
+                    .client()
+                    .build()?
+                    .post(self.base_url())
+                    .json(&serde_json::json!({
+                        "language1": self.source.as_str(),
+                        "language2": self.target.as_str(),
+                        "sourceLanguage": self.source.as_str(),
+                        "query": text,
+                        // ("dictionaryHint": "dees"),
+                        "locale": "en",
+                    }))
+                    
+                    .send()
+                    .await?;
 
-                let html = response_status(response)?.text().await?;
-                let document = scraper::Html::parse_document(&html);
-                let selector = scraper::Selector::parse("div.target")
-                    .map_err(|k| Error::CssParser(format!("{}", k)))?;
-
-                let a_selector = scraper::Selector::parse("a")
-                    .map_err(|k| Error::CssParser(format!("{}", k)))?;
-
-                let mut all = document.select(&selector).map(move |div| {
-                    let div_text = div.text().collect::<String>();
-                    Value::String(
-                        if let Some(span) = div.select(&a_selector).next() {
-                            let pronoun = span.text().collect::<String>();
-                            div_text.replace(pronoun.trim(), "")
-                        } else {
-                            div_text
-                        }
-                        .trim()
-                        .to_string(),
-                    )
-                });
-
-                if *return_all {
-                    Ok(all.collect::<Value>())
-                } else if let Some(firts) = all.next() {
-                    Ok(firts)
-                } else {
-                    Err(Error::TranslationNotFound)
-                }
+                let content: Value = response_status(response)?.json().await?;
+                Ok(content["translation"].clone())
             }
             Engine::Qcri(Qcri { api_key, domain }) => {
                 let response: Value = self

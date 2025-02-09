@@ -214,9 +214,7 @@ async fn main() -> Result<(), Error> {
                     client_id: sub_m.get_one::<String>("id").cloned().unwrap(),
                     secret_key: sub_m.get_one::<String>("key").cloned().unwrap(),
                 },
-                "pons" => Engine::Pons {
-                    return_all: *sub_m.get_one::<bool>("synonym").unwrap(),
-                },
+                "pons" => Engine::Pons,
                 "qcri" => Engine::Qcri(Qcri {
                     api_key: sub_m.get_one::<String>("key").cloned().unwrap(),
                     domain: sub_m.get_one::<String>("domain").cloned().unwrap(),
