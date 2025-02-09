@@ -1,11 +1,9 @@
 mod engine;
-mod qcri;
 #[cfg(target_arch = "wasm32")]
 pub mod wasm;
 
 use crate::Error;
 pub use engine::*;
-pub use qcri::Qcri;
 use reqwest::{Client, ClientBuilder, Response};
 use serde_json::Value;
 use std::ops::{Deref, DerefMut};
@@ -143,8 +141,8 @@ impl Translator {
                     Err(Error::TranslationNotFound)
                 }
             }
-            Engine::Libre { api_key, alternatives, .. } => {
-                let alternatives_str = alternatives.to_string();
+            Engine::Libre(libre) => {
+                let alternatives_str = libre.alternatives.to_string();
                 let mut url_params = vec![
                     ("q", text),
                     ("source", &self.source),
@@ -153,8 +151,8 @@ impl Translator {
                     ("alternatives", &alternatives_str)
                 ];
 
-                if !api_key.is_empty() {
-                    url_params.push(("api_key", api_key))
+                if !libre.api_key.is_empty() {
+                    url_params.push(("api_key", &libre.api_key))
                 }
 
                 let response = self

@@ -1,5 +1,10 @@
-use super::qcri::Qcri;
+mod qcri;
+mod libre;
 use std::{fmt, str::FromStr};
+
+pub use qcri::Qcri;
+pub use libre::Libre;
+
 
 #[macro_export]
 macro_rules! codes_to_languages {
@@ -67,11 +72,7 @@ pub enum Engine {
     /// List of LibreTranslate endpoint can be found at:
     /// https://github.com/LibreTranslate/LibreTranslate#mirrors
     /// Some require an API key
-    Libre {
-        api_key: String,
-        url: String,
-        alternatives: usize
-    },
+    Libre (Libre),
     Linguee {
         return_all: bool,
     },
@@ -111,7 +112,7 @@ impl Engine {
                 let free = if *use_free_api { "-free" } else { "" };
                 format!("https://api{free}/{version}/translate")
             }
-            Self::Libre { url, .. } => format!("{url}/translate"),
+            Self::Libre (libre) => format!("{}/translate", libre.url),
             Self::Linguee { .. } => "https://www.linguee.com/".into(),
             Self::Microsoft { .. } => {
                 "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0".into()

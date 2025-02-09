@@ -187,7 +187,7 @@ async fn main() -> Result<(), Error> {
                     version: sub_m.get_one::<String>("version").unwrap().parse().unwrap(),
                     use_free_api: *sub_m.get_one::<bool>("free").unwrap(),
                 },
-                "libre" => Engine::Libre {
+                "libre" => Engine::Libre(Libre {
                     api_key: sub_m.get_one::<String>("api-key").cloned().unwrap(),
                     alternatives: sub_m.get_one::<usize>("alternatives").cloned().unwrap(),
                     url: if *sub_m.get_one::<bool>("default").unwrap() {
@@ -197,7 +197,7 @@ async fn main() -> Result<(), Error> {
                     } else {
                         "https://libretranslate.de/".into()
                     },
-                },
+                }),
                 "linguee" => Engine::Linguee {
                     return_all: *sub_m.get_one::<bool>("synonym").unwrap(),
                 },
