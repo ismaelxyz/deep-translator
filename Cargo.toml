@@ -15,23 +15,29 @@ crate-type = ["cdylib", "rlib"]
 
 
 [dependencies]
-reqwest = { version = "0.11", features = ["json"] }
-serde   = { version = "1", features = ["derive"] }
-serde_json = "1.0.86"
-clap       = "3.2.22"
-scraper    = "0.13.0"
+serde_json = "1"
+clap       = "4"
+scraper    = "0.22"
+
+[dependencies.reqwest]
+version = "0.12"
+features = ["json"]
+
+[dependencies.serde]
+version = "1"
+features = ["derive"] 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio   = { version = "1", features = ["full"] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-gloo-utils = "0.1.6"
-wasm-bindgen-futures = "0.4.34"
-wasm-bindgen = { version = "0.2.84", features = ["serde-serialize"] }
-js-sys = "0.3.61"
+gloo-utils = "0.2"
+wasm-bindgen-futures = "0.4"
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+js-sys = "0.3"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies.web-sys]
-version = "0.3.61"
+version = "0.3"
 features = [
     "Document", "Window", "HtmlElement", "DomRect", "Element", "Node", "NodeList",
     "CssStyleDeclaration", "Response", "XmlHttpRequest", "HtmlLinkElement",

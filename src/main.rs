@@ -31,20 +31,17 @@ async fn main() -> Result<(), Error> {
             Command::new("deepl").about("Use Deepl as engine").args(&[
                 Arg::new("api-key")
                     .long("--api-key")
-                    .takes_value(true)
                     .value_name("API-KEY")
                     .required(true)
                     .help("user api key"),
                 Arg::new("version")
                     .long("version")
-                    .takes_value(true)
                     .value_parser(["v1", "v2"])
                     .default_value("v2")
                     .value_name("VERSION")
                     .help("use api version"),
                 Arg::new("free")
                     .long("--free")
-                    .takes_value(false)
                     .action(ArgAction::SetTrue)
                     .help("use free api"),
             ]),
@@ -52,25 +49,21 @@ async fn main() -> Result<(), Error> {
             Command::new("libre").about("Use Libre as engine").args(&[
                 Arg::new("api-key")
                     .long("--api-key")
-                    .takes_value(true)
                     .default_value("")
                     .value_name("API-KEY")
                     .help("user api key"),
                 Arg::new("custom")
                     .long("--custom")
-                    .takes_value(true)
                     .value_name("EMAIL")
                     .help("you can use a custom endpoint"),
                 Arg::new("normal")
                     .long("--normal")
-                    .takes_value(false)
                     .action(ArgAction::SetTrue)
                     .help("you want to not use the free api"),
             ]),
             Command::new("linguee").about("Use Linguee as engine").arg(
                 Arg::new("synonym")
                     .long("--synonym")
-                    .takes_value(false)
                     .action(ArgAction::SetTrue)
                     .help("return all synonym of the translated word"),
             ),
@@ -79,12 +72,10 @@ async fn main() -> Result<(), Error> {
                 .args(&[
                     Arg::new("key")
                         .long("--key")
-                        .takes_value(true)
                         .value_name("KEY")
                         .help("user api key"),
                     Arg::new("region")
                         .long("--region")
-                        .takes_value(true)
                         .value_name("REGION")
                         .default_value("")
                         .help("region where user is"),
@@ -94,26 +85,22 @@ async fn main() -> Result<(), Error> {
                 .args(&[
                     Arg::new("email")
                         .long("--email")
-                        .takes_value(true)
                         .value_name("EMAIL")
                         .default_value("")
                         .help("user email"),
                     Arg::new("synonym")
                         .long("--synonym")
-                        .takes_value(false)
                         .action(ArgAction::SetTrue)
                         .help("show all synonym/similars of the translated text"),
                 ]),
             Command::new("papago").about("Use Papago as engine").args(&[
                 Arg::new("id")
                     .long("--id")
-                    .takes_value(true)
                     .value_name("ID")
                     .required(true)
                     .help("user id"),
                 Arg::new("key")
                     .long("--key")
-                    .takes_value(true)
                     .value_name("KEY")
                     .required(true)
                     .help("user uniq key"),
@@ -121,27 +108,23 @@ async fn main() -> Result<(), Error> {
             Command::new("pons").about("Use Pons as engine").arg(
                 Arg::new("synonym")
                     .long("--synonym")
-                    .takes_value(false)
                     .action(ArgAction::SetTrue)
                     .help("return all synonym of the translated word"),
             ),
             Command::new("qcri").about("Use Qcri as engine").args(&[
                 Arg::new("key")
                     .long("--key")
-                    .takes_value(true)
                     .value_name("KEY")
                     .required(true)
                     .help("user uniq key"),
                 Arg::new("domain")
                     .long("--domain")
-                    .takes_value(true)
                     .value_name("DOMAIN")
                     .help("a qcri domain"),
             ]),
             Command::new("yandex").about("Use Yandex as engine").arg(
                 Arg::new("key")
                     .long("--key")
-                    .takes_value(true)
                     .value_name("KEY")
                     .required(true)
                     .help("user uniq key"),
@@ -151,24 +134,20 @@ async fn main() -> Result<(), Error> {
             Arg::new("source")
                 .default_value("it")
                 .long("--source")
-                .takes_value(true)
                 .value_name("SOURCE")
                 .help("source language to translate from"),
             Arg::new("target")
                 .long("--target")
-                .takes_value(true)
                 .default_value("en")
                 .value_name("TARGET")
                 .help("target language to translate to"),
             Arg::new("text")
                 .long("--text")
-                .takes_value(true)
                 .default_value("Ciao")
                 .value_name("TEXT")
                 .help("text you want to translate"),
             Arg::new("languages")
                 .long("--languages")
-                .takes_value(false)
                 .action(ArgAction::SetTrue)
                 .help(
                     "all the languages available with the translator. \
@@ -177,7 +156,6 @@ async fn main() -> Result<(), Error> {
             #[cfg(not(target_arch = "wasm32"))]
             Arg::new("proxy")
                 .long("--proxy")
-                .takes_value(true)
                 .value_name("PROXY")
                 .action(ArgAction::Append)
                 .help("append proxy to proxies list"),

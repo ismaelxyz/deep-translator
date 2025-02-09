@@ -157,7 +157,7 @@ foreach ($usuarios as $usuario) {
                     ok @ Ok(..) => ok,
                     _ => scraper::Selector::parse("div.t0"),
                 }
-                .map_err(|k| Error::CssParser(format!("{:?}", k.kind)))?;
+                .map_err(|k| Error::CssParser(format!("{:}", k)))?;
 
                 if let Some(div) = document.select(&selector).next() {
                     let res = div.text().collect::<String>();
@@ -203,10 +203,10 @@ foreach ($usuarios as $usuario) {
                 let html = response_status(response)?.text().await?;
                 let document = scraper::Html::parse_document(&html);
                 let selector = scraper::Selector::parse("a.dictLink.featured")
-                    .map_err(|k| Error::CssParser(format!("{:?}", k.kind)))?;
+                    .map_err(|k| Error::CssParser(format!("{}", k)))?;
 
                 let span_selector = scraper::Selector::parse("span.placeholder")
-                    .map_err(|k| Error::CssParser(format!("{:?}", k.kind)))?;
+                    .map_err(|k| Error::CssParser(format!("{}", k)))?;
 
                 let mut all = document.select(&selector).map(move |a| {
                     let a_text = a.text().collect::<String>();
@@ -343,10 +343,10 @@ foreach ($usuarios as $usuario) {
                 let html = response_status(response)?.text().await?;
                 let document = scraper::Html::parse_document(&html);
                 let selector = scraper::Selector::parse("div.target")
-                    .map_err(|k| Error::CssParser(format!("{:?}", k.kind)))?;
+                    .map_err(|k| Error::CssParser(format!("{}", k)))?;
 
                 let a_selector = scraper::Selector::parse("a")
-                    .map_err(|k| Error::CssParser(format!("{:?}", k.kind)))?;
+                    .map_err(|k| Error::CssParser(format!("{}", k)))?;
 
                 let mut all = document.select(&selector).map(move |div| {
                     let div_text = div.text().collect::<String>();

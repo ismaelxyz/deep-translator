@@ -1,7 +1,6 @@
 use serde_json::Value;
 use std::fmt;
 
-//#[derive(Serialize, Deserialize)]
 pub enum QText {
     Str(String),
     ListStr(Vec<String>),
@@ -37,6 +36,7 @@ impl fmt::Display for QText {
 }
 
 /// send a request and return the response body parsed as dictionary
+#[cfg_attr(target_arch = "wasm32", allow(unused_mut))]
 async fn get_request_body<T: Into<QText>>(text: T, api_key: &str) -> Value {
     debug_assert!(
         !api_key.is_empty(),
