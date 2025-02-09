@@ -19,14 +19,19 @@ fn response_status(response: Response) -> Result<Response, Error> {
 }
 
 /// A Translator
-///```no_run
-/// use deeptrans::Translator;
+/// This is the main structure of the library, which allows to serve the translations
+/// taking advantage of the logic of the different engines
+/// 
+///```rust
+/// use deeptranslator::{Engine, Translator};
+/// 
+/// #[tokio::main]
+/// async fn main() {
+///     let translator = Translator::with_engine("es", "en", Engine::Google);
+///     let translation_result = translator.translate("Saludos a todo el mundo").await;
 ///
-/// let mut translator = Translator::new();
-/// let translation =
-///     translator.translate("Texto a traducir").await;
-///
-/// println!("{translation}");
+///     println!("{:?}", translation_result);
+// }
 ///```
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
 pub struct Translator {
