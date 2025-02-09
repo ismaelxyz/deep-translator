@@ -70,6 +70,7 @@ pub enum Engine {
     Libre {
         api_key: String,
         url: String,
+        alternatives: usize
     },
     Linguee {
         return_all: bool,

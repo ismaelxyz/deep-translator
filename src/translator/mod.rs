@@ -82,16 +82,10 @@ impl Translator {
         url_params: &[(&str, &str)],
     ) -> Result<Response, Error> {
         let url = I::into(url).unwrap_or_else(|| self.base_url());
-
-        // let valid_origin = Header::new("Access-Control-Allow-Origin", "http://127.0.0.1:4000");
-        // let xvalid_origin = Header::new("Origin", "http://127.0.0.1:4000");
-        // let ctype = Header::new("Content-Type", "application/json");
         let response = self
             .client()
             .build()?
             .get(url)
-            .header("Access-Control-Allow-Origin", "http://127.0.0.1:4000") // 3.
-            .header("Origin", "http://127.0.0.1:4000")
             .header("Content-Type", "application/json")
             .query(&url_params)
             .send()
@@ -149,12 +143,14 @@ impl Translator {
                     Err(Error::TranslationNotFound)
                 }
             }
-            Engine::Libre { api_key, .. } => {
+            Engine::Libre { api_key, alternatives, .. } => {
+                let alternatives_str = alternatives.to_string();
                 let mut url_params = vec![
                     ("q", text),
                     ("source", &self.source),
                     ("target", &self.target),
                     ("format", "text"),
+                    ("alternatives", &alternatives_str)
                 ];
 
                 if !api_key.is_empty() {

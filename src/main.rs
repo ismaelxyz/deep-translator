@@ -56,10 +56,15 @@ async fn main() -> Result<(), Error> {
                     .long("--custom")
                     .value_name("EMAIL")
                     .help("you can use a custom endpoint"),
-                Arg::new("normal")
-                    .long("--normal")
+                Arg::new("default")
+                    .long("--default")
                     .action(ArgAction::SetTrue)
                     .help("you want to not use the free api"),
+                Arg::new("alternatives")
+                    .long("--alternatives")
+                    .default_value("1")
+                    .value_name("ALT")
+                    .help("the maximum number of alternatives you want to see"),
             ]),
             Command::new("linguee").about("Use Linguee as engine").arg(
                 Arg::new("synonym")
@@ -184,7 +189,8 @@ async fn main() -> Result<(), Error> {
                 },
                 "libre" => Engine::Libre {
                     api_key: sub_m.get_one::<String>("api-key").cloned().unwrap(),
-                    url: if *sub_m.get_one::<bool>("normal").unwrap() {
+                    alternatives: sub_m.get_one::<usize>("alternatives").cloned().unwrap(),
+                    url: if *sub_m.get_one::<bool>("default").unwrap() {
                         "https://libretranslate.com/".into()
                     } else if let Some(custom) = sub_m.get_one::<String>("custom") {
                         custom.clone()
