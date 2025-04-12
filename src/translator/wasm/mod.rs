@@ -1,11 +1,16 @@
 //! Support for web platform
 
 mod google;
+mod libre;
 mod deepl;
-use wasm_bindgen::prelude::*;
+mod linguee;
 
+use wasm_bindgen::prelude::*;
 pub use google::*;
 pub use deepl::*;
+pub use libre::*;
+pub use linguee::*;
+
 
 #[derive(
     Debug,
@@ -292,82 +297,7 @@ pub struct Translator {
     target: JsValue,
 }
 
-#[derive(Clone, Default)]
-#[wasm_bindgen]
-pub struct Libre {
-    translator: Translator,
-    // String
-    api_key: JsValue,
-    // String
-    url: JsValue,
-    // usize
-    alternatives: JsValue,
-}
 
-#[wasm_bindgen]
-impl Libre {
-    #[wasm_bindgen(constructor)]
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    #[wasm_bindgen(setter, js_name = setSource)]
-    pub fn set_source(&mut self, source: &str) {
-        self.translator.source = JsValue::from(source);
-    }
-
-    #[wasm_bindgen(setter, js_name = setTarget)]
-    pub fn set_target(&mut self, target: &str) {
-        self.translator.target = JsValue::from(target);
-    }
-
-    #[wasm_bindgen(getter, js_name = getSource)]
-    pub fn source(&self) -> JsValue {
-        self.translator.source.clone()
-    }
-
-    #[wasm_bindgen(getter, js_name = getTarget)]
-    pub fn target(&self) -> JsValue {
-        self.translator.target.clone()
-    }
-}
-
-#[derive(Clone, Default)]
-#[wasm_bindgen]
-pub struct Linguee {
-    translator: Translator,
-    // bool
-    return_all: JsValue,
-}
-
-
-#[wasm_bindgen]
-impl Linguee {
-    #[wasm_bindgen(constructor)]
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    #[wasm_bindgen(setter, js_name = setSource)]
-    pub fn set_source(&mut self, source: &str) {
-        self.translator.source = JsValue::from(source);
-    }
-
-    #[wasm_bindgen(setter, js_name = setTarget)]
-    pub fn set_target(&mut self, target: &str) {
-        self.translator.target = JsValue::from(target);
-    }
-
-    #[wasm_bindgen(getter, js_name = getSource)]
-    pub fn source(&self) -> JsValue {
-        self.translator.source.clone()
-    }
-
-    #[wasm_bindgen(getter, js_name = getTarget)]
-    pub fn target(&self) -> JsValue {
-        self.translator.target.clone()
-    }
-}
 
 #[derive(Clone, Default)]
 #[wasm_bindgen]
@@ -404,6 +334,26 @@ impl Microsoft {
     #[wasm_bindgen(getter, js_name = getTarget)]
     pub fn target(&self) -> JsValue {
         self.translator.target.clone()
+    }
+
+    #[wasm_bindgen(setter, js_name = setApiKey)]
+    pub fn set_api_key(&mut self, api_key: &str) {
+        self.api_key = JsValue::from(api_key);
+    }
+
+    #[wasm_bindgen(getter, js_name = getApiKey)]
+    pub fn api_key(&self) -> JsValue {
+        self.api_key.clone()
+    }
+
+    #[wasm_bindgen(setter, js_name = setRegion)]
+    pub fn set_region(&mut self, region: &str) {
+        self.region = JsValue::from(region);
+    }
+
+    #[wasm_bindgen(getter, js_name = getRegion)]
+    pub fn region(&self) -> JsValue {
+        self.region.clone()
     }
 }
 
@@ -444,6 +394,26 @@ impl MyMemory {
     pub fn target(&self) -> JsValue {
         self.translator.target.clone()
     }
+
+    #[wasm_bindgen(setter, js_name = setEmail)]
+    pub fn set_email(&mut self, email: &str) {
+        self.email = JsValue::from(email);
+    }
+
+    #[wasm_bindgen(getter, js_name = getEmail)]
+    pub fn email(&self) -> JsValue {
+        self.email.clone()
+    }
+
+    #[wasm_bindgen(setter, js_name = setReturnAll)]
+    pub fn set_return_all(&mut self, return_all: &str) {
+        self.return_all = JsValue::from(return_all);
+    }
+
+    #[wasm_bindgen(getter, js_name = getReturnAll)]
+    pub fn return_all(&self) -> JsValue {
+        self.return_all.clone()
+    }
 }
 
 #[derive(Clone, Default)]
@@ -481,6 +451,26 @@ impl Papago {
     #[wasm_bindgen(getter, js_name = getTarget)]
     pub fn target(&self) -> JsValue {
         self.translator.target.clone()
+    }
+
+    #[wasm_bindgen(setter, js_name = setClientId)]
+    pub fn set_client_id(&mut self, client_id: &str) {
+        self.client_id = JsValue::from(client_id);
+    }
+
+    #[wasm_bindgen(getter, js_name = getClientId)]
+    pub fn client_id(&self) -> JsValue {
+        self.client_id.clone()
+    }
+
+    #[wasm_bindgen(setter, js_name = setSecretKey)]
+    pub fn set_secret_key(&mut self, secret_key: &str) {
+        self.secret_key = JsValue::from(secret_key);
+    }
+
+    #[wasm_bindgen(getter, js_name = getSecretKey)]
+    pub fn secret_key(&self) -> JsValue {
+        self.secret_key.clone()
     }
 }
 
@@ -554,6 +544,26 @@ impl Qcri {
     pub fn target(&self) -> JsValue {
         self.translator.target.clone()
     }
+
+    #[wasm_bindgen(setter, js_name = setApiKey)]
+    pub fn set_api_key(&mut self, api_key: &str) {
+        self.api_key = JsValue::from(api_key);
+    }
+
+    #[wasm_bindgen(getter, js_name = getApiKey)]
+    pub fn api_key(&self) -> JsValue {
+        self.api_key.clone()
+    }
+
+    #[wasm_bindgen(setter, js_name = setDomain)]
+    pub fn set_domain(&mut self, domain: &str) {
+        self.domain = JsValue::from(domain);
+    }
+
+    #[wasm_bindgen(getter, js_name = getDomain)]
+    pub fn domain(&self) -> JsValue {
+        self.domain.clone()
+    }
 }
 
 #[derive(Clone, Default)]
@@ -589,5 +599,15 @@ impl Yandex {
     #[wasm_bindgen(getter, js_name = getTarget)]
     pub fn target(&self) -> JsValue {
         self.translator.target.clone()
+    }
+
+    #[wasm_bindgen(setter, js_name = setApiKey)]
+    pub fn set_api_key(&mut self, api_key: &str) {
+        self.api_key = JsValue::from(api_key);
+    }
+
+    #[wasm_bindgen(getter, js_name = getApiKey)]
+    pub fn api_key(&self) -> JsValue {
+        self.api_key.clone()
     }
 }
