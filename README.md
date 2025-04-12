@@ -8,6 +8,11 @@ A flexible free and unlimited rust tool to translate between different languages
 deep-translator --text=cane google
 ```
 
+## Clippy
+
+```sh
+cargo clippy --target wasm32-unknown-unknown --lib
+```
 ## Motivation
 
 I was previously developing a project called SimpleT, a translator with a graphical interface written in Rust using the Egui library and Python in the backend, especially for translations. However, I encountered problems because the graphical interface was very slow due to the interfacing. For this reason, I decided to rewrite everything in Rust.
