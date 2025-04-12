@@ -6,6 +6,8 @@ mod deepl;
 mod linguee;
 mod microsoft;
 mod mymemory;
+mod qcri;
+mod papago;
 
 use wasm_bindgen::prelude::*;
 pub use google::*;
@@ -14,6 +16,9 @@ pub use libre::*;
 pub use linguee::*;
 pub use microsoft::*;
 pub use mymemory::*;
+pub use qcri::*;
+pub use papago::*;
+
 
 #[derive(
     Debug,
@@ -57,64 +62,6 @@ pub struct Translator {
 
 #[derive(Clone, Default)]
 #[wasm_bindgen]
-pub struct Papago {
-    translator: Translator,
-    // String
-    client_id: JsValue,
-    // String
-    secret_key: JsValue,
-}
-
-#[wasm_bindgen]
-impl Papago {
-    #[wasm_bindgen(constructor)]
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    #[wasm_bindgen(setter, js_name = setSource)]
-    pub fn set_source(&mut self, source: &str) {
-        self.translator.source = JsValue::from(source);
-    }
-
-    #[wasm_bindgen(setter, js_name = setTarget)]
-    pub fn set_target(&mut self, target: &str) {
-        self.translator.target = JsValue::from(target);
-    }
-
-    #[wasm_bindgen(getter, js_name = getSource)]
-    pub fn source(&self) -> JsValue {
-        self.translator.source.clone()
-    }
-
-    #[wasm_bindgen(getter, js_name = getTarget)]
-    pub fn target(&self) -> JsValue {
-        self.translator.target.clone()
-    }
-
-    #[wasm_bindgen(setter, js_name = setClientId)]
-    pub fn set_client_id(&mut self, client_id: &str) {
-        self.client_id = JsValue::from(client_id);
-    }
-
-    #[wasm_bindgen(getter, js_name = getClientId)]
-    pub fn client_id(&self) -> JsValue {
-        self.client_id.clone()
-    }
-
-    #[wasm_bindgen(setter, js_name = setSecretKey)]
-    pub fn set_secret_key(&mut self, secret_key: &str) {
-        self.secret_key = JsValue::from(secret_key);
-    }
-
-    #[wasm_bindgen(getter, js_name = getSecretKey)]
-    pub fn secret_key(&self) -> JsValue {
-        self.secret_key.clone()
-    }
-}
-
-#[derive(Clone, Default)]
-#[wasm_bindgen]
 pub struct Pons {
     translator: Translator
 }
@@ -147,63 +94,7 @@ impl Pons {
     }
 }
 
-#[derive(Clone, Default)]
-#[wasm_bindgen]
-pub struct Qcri {
-    translator: Translator,
-    // String
-    api_key: JsValue,
-    // String
-    domain: JsValue,
-}
 
-#[wasm_bindgen]
-impl Qcri {
-    #[wasm_bindgen(constructor)]
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    #[wasm_bindgen(setter, js_name = setSource)]
-    pub fn set_source(&mut self, source: &str) {
-        self.translator.source = JsValue::from(source);
-    }
-
-    #[wasm_bindgen(setter, js_name = setTarget)]
-    pub fn set_target(&mut self, target: &str) {
-        self.translator.target = JsValue::from(target);
-    }
-
-    #[wasm_bindgen(getter, js_name = getSource)]
-    pub fn source(&self) -> JsValue {
-        self.translator.source.clone()
-    }
-
-    #[wasm_bindgen(getter, js_name = getTarget)]
-    pub fn target(&self) -> JsValue {
-        self.translator.target.clone()
-    }
-
-    #[wasm_bindgen(setter, js_name = setApiKey)]
-    pub fn set_api_key(&mut self, api_key: &str) {
-        self.api_key = JsValue::from(api_key);
-    }
-
-    #[wasm_bindgen(getter, js_name = getApiKey)]
-    pub fn api_key(&self) -> JsValue {
-        self.api_key.clone()
-    }
-
-    #[wasm_bindgen(setter, js_name = setDomain)]
-    pub fn set_domain(&mut self, domain: &str) {
-        self.domain = JsValue::from(domain);
-    }
-
-    #[wasm_bindgen(getter, js_name = getDomain)]
-    pub fn domain(&self) -> JsValue {
-        self.domain.clone()
-    }
-}
 
 #[derive(Clone, Default)]
 #[wasm_bindgen]

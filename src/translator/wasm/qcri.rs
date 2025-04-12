@@ -3,15 +3,16 @@ use wasm_bindgen::prelude::*;
 
 #[derive(Clone, Default)]
 #[wasm_bindgen]
-pub struct MyMemory {
+pub struct Qcri {
     translator: super::Translator,
     // String
-    email: JsValue,
-    return_all: bool,
+    api_key: JsValue,
+    // String
+    domain: JsValue,
 }
 
 #[wasm_bindgen]
-impl MyMemory {
+impl Qcri {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         Self::default()
@@ -27,11 +28,6 @@ impl MyMemory {
         self.translator.target = JsValue::from(target);
     }
 
-    #[wasm_bindgen(setter, js_name = setReturnAll)]
-    pub fn set_return_all(&mut self, return_all: bool) {
-        self.return_all = return_all;
-    }
-
     #[wasm_bindgen(getter, js_name = getSource)]
     pub fn source(&self) -> JsValue {
         self.translator.source.clone()
@@ -42,19 +38,24 @@ impl MyMemory {
         self.translator.target.clone()
     }
 
-    #[wasm_bindgen(setter, js_name = setEmail)]
-    pub fn set_email(&mut self, email: &str) {
-        self.email = JsValue::from(email);
+    #[wasm_bindgen(setter, js_name = setApiKey)]
+    pub fn set_api_key(&mut self, api_key: &str) {
+        self.api_key = JsValue::from(api_key);
     }
 
-    #[wasm_bindgen(getter, js_name = getEmail)]
-    pub fn email(&self) -> JsValue {
-        self.email.clone()
+    #[wasm_bindgen(getter, js_name = getApiKey)]
+    pub fn api_key(&self) -> JsValue {
+        self.api_key.clone()
     }
 
-    #[wasm_bindgen(getter, js_name = getReturnAll)]
-    pub fn return_all(&self) -> bool {
-        self.return_all
+    #[wasm_bindgen(setter, js_name = setDomain)]
+    pub fn set_domain(&mut self, domain: &str) {
+        self.domain = JsValue::from(domain);
+    }
+
+    #[wasm_bindgen(getter, js_name = getDomain)]
+    pub fn domain(&self) -> JsValue {
+        self.domain.clone()
     }
 
     #[wasm_bindgen]
@@ -69,22 +70,22 @@ impl MyMemory {
     }
 }
 
-impl From<MyMemory> for crate::Translator {
+impl From<Qcri> for crate::Translator {
     #[inline(always)]
-    fn from(wasm_translator: MyMemory) -> crate::Translator {
-        let MyMemory {
+    fn from(wasm_translator: Qcri) -> crate::Translator {
+        let Qcri {
             translator: super::Translator { source, target },
-            email,
-            return_all,
+            api_key,
+            domain,
         } = wasm_translator;
 
         let source = source.as_string().unwrap();
         let target = target.as_string().unwrap();
-        let email = email.as_string().unwrap();
+        let api_key = api_key.as_string().unwrap();
+        let domain = domain.as_string().unwrap();
 
-        let engine = crate::Engine::MyMemory { email, return_all };
+        let engine = crate::Engine::Qcri(crate::Qcri { api_key, domain });
 
         crate::Translator::with_engine(&source, &target, engine)
     }
 }
-

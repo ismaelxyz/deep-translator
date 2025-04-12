@@ -3,15 +3,16 @@ use wasm_bindgen::prelude::*;
 
 #[derive(Clone, Default)]
 #[wasm_bindgen]
-pub struct MyMemory {
+pub struct Papago {
     translator: super::Translator,
     // String
-    email: JsValue,
-    return_all: bool,
+    client_id: JsValue,
+    // String
+    secret_key: JsValue,
 }
 
 #[wasm_bindgen]
-impl MyMemory {
+impl Papago {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
         Self::default()
@@ -27,11 +28,6 @@ impl MyMemory {
         self.translator.target = JsValue::from(target);
     }
 
-    #[wasm_bindgen(setter, js_name = setReturnAll)]
-    pub fn set_return_all(&mut self, return_all: bool) {
-        self.return_all = return_all;
-    }
-
     #[wasm_bindgen(getter, js_name = getSource)]
     pub fn source(&self) -> JsValue {
         self.translator.source.clone()
@@ -42,19 +38,24 @@ impl MyMemory {
         self.translator.target.clone()
     }
 
-    #[wasm_bindgen(setter, js_name = setEmail)]
-    pub fn set_email(&mut self, email: &str) {
-        self.email = JsValue::from(email);
+    #[wasm_bindgen(setter, js_name = setClientId)]
+    pub fn set_client_id(&mut self, client_id: &str) {
+        self.client_id = JsValue::from(client_id);
     }
 
-    #[wasm_bindgen(getter, js_name = getEmail)]
-    pub fn email(&self) -> JsValue {
-        self.email.clone()
+    #[wasm_bindgen(getter, js_name = getClientId)]
+    pub fn client_id(&self) -> JsValue {
+        self.client_id.clone()
     }
 
-    #[wasm_bindgen(getter, js_name = getReturnAll)]
-    pub fn return_all(&self) -> bool {
-        self.return_all
+    #[wasm_bindgen(setter, js_name = setSecretKey)]
+    pub fn set_secret_key(&mut self, secret_key: &str) {
+        self.secret_key = JsValue::from(secret_key);
+    }
+
+    #[wasm_bindgen(getter, js_name = getSecretKey)]
+    pub fn secret_key(&self) -> JsValue {
+        self.secret_key.clone()
     }
 
     #[wasm_bindgen]
@@ -69,22 +70,25 @@ impl MyMemory {
     }
 }
 
-impl From<MyMemory> for crate::Translator {
+impl From<Papago> for crate::Translator {
     #[inline(always)]
-    fn from(wasm_translator: MyMemory) -> crate::Translator {
-        let MyMemory {
+    fn from(wasm_translator: Papago) -> crate::Translator {
+        let Papago {
             translator: super::Translator { source, target },
-            email,
-            return_all,
+            client_id,
+            secret_key,
         } = wasm_translator;
 
         let source = source.as_string().unwrap();
         let target = target.as_string().unwrap();
-        let email = email.as_string().unwrap();
+        let client_id = client_id.as_string().unwrap();
+        let secret_key = secret_key.as_string().unwrap();
 
-        let engine = crate::Engine::MyMemory { email, return_all };
+        let engine = crate::Engine::Papago {
+            client_id,
+            secret_key,
+        };
 
         crate::Translator::with_engine(&source, &target, engine)
     }
 }
-
