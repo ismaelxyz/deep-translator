@@ -69,14 +69,12 @@ async fn get_request_body<T: Into<QText>>(text: T, api_key: &str) -> Value {
         .await
         .unwrap();
 
-    println!("req -> {:?}", &req);
     req["data"].clone()
 }
 
 /// function responsible for detecting the language from a text
 pub async fn single(text: &str, api_key: &str, detailed: bool) -> Value {
     let body = get_request_body(text.to_string(), api_key).await;
-    println!("body -> {:?}", &body);
     let detections = &body["detections"];
 
     if detailed {
@@ -89,7 +87,6 @@ pub async fn single(text: &str, api_key: &str, detailed: bool) -> Value {
 /// function responsible for detecting the language from a text
 pub async fn batch(text_list: Vec<String>, api_key: &str, detailed: bool) -> Vec<Value> {
     let body = get_request_body(text_list, api_key).await;
-    println!("body -> {:?}", &body);
     let detections = &body["detections"];
 
     let Value::Array(detections) = detections else {
